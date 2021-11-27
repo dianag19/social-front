@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">Home</router-link>
 
