@@ -15,6 +15,9 @@
 
         <ul class="navbar-nav me-auto mb-2 mb-md-0" v-if="auth">
           <li class="nav-item">
+            <a href="/myprofile" class="nav-link" >My profile</a>
+          </li>
+          <li class="nav-item">
             <a href="/login" class="nav-link" @click="logout">Logout</a>
           </li>
         </ul>
@@ -38,6 +41,7 @@ export default {
         credentials: 'include',
       });
     }
+    console.log("auth store", store.state.authenticated)
     return {
       auth,
       logout

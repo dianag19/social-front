@@ -1,24 +1,19 @@
 <template>
-  <div>
-    <div class="full-width">
-      {{ message }}
-    </div>
-    <div v-if="auth">
-      <InputPost />
-    </div>
+  <div v-if="auth">
+    <InfoUser/>
   </div>
 </template>
 <script lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
-import InputPost from "../components/InputPost.vue";
+import InfoUser from "../components/InfoUser.vue";
 export default {
-  components: { InputPost },
-  name: "Home",
+  components: { InfoUser },
+  name: "Profile",
   setup() {
-    const message = ref("You are not logged in");
     const store = useStore();
     const auth = computed(() => store.state.authenticated);
+    let result;
     onMounted(async () => {
       try {
         const response = await fetch("http://localhost:8800/api/auth/user", {
@@ -27,21 +22,21 @@ export default {
         });
 
         const content = await response.json();
-        if (response.status == 200) {
-          message.value = `Hi ${content.username}`;
-          await store.dispatch("setAuth", true);
-        } else {
-          console.log("dispatch false");
-          await store.dispatch("setAuth", false);
-        }
+        result = content;
+        console.log("content",content);
+        await store.dispatch("setAuth", true);
+        await store.dispatch("setName", content.username);
+        await store.dispatch("setEmail", content.email);
+        await store.dispatch("setProfile", content.username);
+        await store.dispatch("setCover", content.username);
       } catch (e) {
         await store.dispatch("setAuth", false);
       }
     });
 
     return {
-      message,
       auth,
+      result
     };
   },
 };
