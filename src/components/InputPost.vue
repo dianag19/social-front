@@ -1,12 +1,16 @@
 <template>
   <div>
-      <input type="text" placeholder="My post...">
+    <form>
+      <label for="fname">Post something</label><br />
+      <input type="text" id="fname" placeholder="What I am thinking..." /><br />
+      <input type="submit" value="Submit">
+    </form>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  name: "InputPost"
+  name: "InputPost",
   /*setup() {
     const store = useStore();
     const auth = computed(() => store.state.authenticated)
@@ -22,5 +26,5 @@ export default {
       logout
     }
   }*/
-}
+};
 </script>
