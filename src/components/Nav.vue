@@ -18,6 +18,9 @@
             <a href="/myprofile" class="nav-link" >My profile</a>
           </li>
           <li class="nav-item">
+            <a href="/edit" class="nav-link" >Edit profile</a>
+          </li>
+          <li class="nav-item">
             <a href="/login" class="nav-link" @click="logout">Logout</a>
           </li>
         </ul>

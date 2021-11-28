@@ -1,30 +1,44 @@
 <template>
   <div>
-    <form>
+    <form v-on:submit.prevent="submit">
       <label for="fname">Post something</label><br />
-      <input type="text" id="fname" placeholder="What I am thinking..." /><br />
-      <input type="submit" value="Submit">
+      <input
+        v-model="data.desc"
+        type="text"
+        placeholder="What I am thinking..."
+      />
+     <br />
+      <button type="submit">Submit</button>
     </form>
   </div>
 </template>
 
-<script lang="ts">
+<script >
+import axios from "axios";
+import { reactive } from 'vue'
 export default {
   name: "InputPost",
-  /*setup() {
-    const store = useStore();
-    const auth = computed(() => store.state.authenticated)
-    const logout = async () => {
-      await fetch('http://localhost:8800/api/auth/logout', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
+  props:{
+    userId: String
+  },
+  setup(props) {
+      
+      const data = reactive({
+          desc: '',
+          userId: props.userId
       });
-    }
-    return {
-      auth,
-      logout
-    }
-  }*/
+
+        const submit = async () =>{
+            await fetch('http://localhost:8800/api/posts', {
+                method:"POST",
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+        }
+      return{
+          data,
+          submit
+      }
+  }
 };
 </script>

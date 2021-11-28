@@ -4,7 +4,9 @@
       <h3>{{ message }}</h3>
     </div>
     <div v-if="auth" >
-      <InputPost />
+      <InputPost :userId='userId'/>
+      <br>
+      <Posts :user="result._id" :all='true' />
     </div>
   </div>
 </template>
@@ -12,10 +14,13 @@
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
 import InputPost from "../components/InputPost.vue";
+import Posts from "../components/Posts.vue";
 export default {
-  components: { InputPost },
+  components: { InputPost,Posts },
   name: "Home",
   setup() {
+    let userId =ref("");
+    let result =ref({})
     const message = ref("You are not logged in");
     const store = useStore();
     const auth = computed(() => store.state.authenticated);
@@ -28,6 +33,8 @@ export default {
 
         const content = await response.json();
         if (response.status == 200) {
+          result.value = content
+          userId.value = content._id;
           message.value = `Hi ${content.username}`;
           await store.dispatch("setAuth", true);
         } else {
@@ -40,10 +47,12 @@ export default {
     });
 
     return {
+      result,
+      userId,
       message,
       auth,
     };
-  },
+  }
 };
 </script>
 <style>

@@ -3,11 +3,13 @@ import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Profile from '@/views/Profile.vue'
+import EditProfile from '@/views/EditProfile.vue'
 const routes: Array<RouteRecordRaw> = [
   { path:'/', component: Home},
   { path:'/login', component: Login},
   { path:'/register', component: Register},
   { path:'/myprofile', component: Profile},
+  { path:'/edit', component: EditProfile},
 ]
 
 const router = createRouter({
