@@ -1,10 +1,24 @@
 <template>
-  <div  v-if="result.length != 0 ">
+  <div v-if="result.length != 0">
     <div v-for="post in result" :key="post._id">
       <div>
         <h3>{{ post.desc }}</h3>
+        <p>Comments:</p>
+        <p v-for="comment in post.comments" :key="comment">
+          {{ comment.comments }}
+        </p>
+        <form action="" @submit.prevent="commentPost">
+          <input
+            type="text"
+            id="newComment"
+            name="newComment"
+            placeholder="Comment"
+          />
+          <button for="newComment" type="submit">Comment</button>
+        </form>
+
         <p>Likes : {{ post.likes.length }}</p>
-        <button v-on:click="likePost(post._id); forceRerender">Like</button>
+        <button v-on:click="likePost(post._id)">Like</button>
       </div>
     </div>
   </div>
@@ -24,7 +38,6 @@ export default {
   },
   methods: {
     likePost: async function (id) {
-      console.log("id post", id);
       try {
         const data = {
           userId: "61a15fe4ef1e4e827bd8986d",
@@ -39,8 +52,28 @@ export default {
           }
         );
 
-        const content = await response.json()
-        .then(r => this.init())
+        const content = await response.json().then((r) => this.init());
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    commentPost: async function (id) {
+      try {
+        const data = {
+          comments: this.dataForm.comment,
+          userId: "61a15fe4ef1e4e827bd8986d",
+        };
+        const response = await fetch(
+          `http://localhost:8800/api/posts/${id}/comment`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(data),
+          }
+        );
+
+        const content = await response.json().then((r) => this.init());
       } catch (e) {
         console.log(e);
       }
@@ -52,8 +85,10 @@ export default {
     const profile = computed(() => store.state.profile);
     const cover = computed(() => store.state.cover);
     let result = ref({});
-
-    async function init(){
+    const dataForm = reactive({
+      comment: "",
+    });
+    async function init() {
       const data = {
         userId: props.user,
       };
@@ -96,14 +131,15 @@ export default {
       }
     }
     onMounted(async () => {
-      init()
+      await init();
     });
     return {
       name,
       profile,
       cover,
       result,
-      init
+      init,
+      dataForm
     };
   },
 };

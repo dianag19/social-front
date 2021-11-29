@@ -7,7 +7,7 @@
         type="text"
         placeholder="What I am thinking..."
       />
-     <br />
+      <br />
       <button type="submit">Submit</button>
     </form>
   </div>
@@ -15,30 +15,34 @@
 
 <script >
 import axios from "axios";
-import { reactive } from 'vue'
+import { reactive } from "vue";
 export default {
   name: "InputPost",
-  props:{
-    userId: String
+  props: {
+    userId: String,
+  },
+  methods: {
+    init: async function (data) {
+      await fetch("http://localhost:8800/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    },
   },
   setup(props) {
-      
-      const data = reactive({
-          desc: '',
-          userId: props.userId
-      });
+    const data = reactive({
+      desc: "",
+      userId: props.userId,
+    });
 
-        const submit = async () =>{
-            await fetch('http://localhost:8800/api/posts', {
-                method:"POST",
-                headers:{'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
-        }
-      return{
-          data,
-          submit
-      }
-  }
+    const submit = async () => {
+      this.init(data)
+    };
+    return {
+      data,
+      submit,
+    };
+  },
 };
 </script>
