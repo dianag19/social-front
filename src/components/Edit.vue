@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { computed, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
 import axios from "axios";
